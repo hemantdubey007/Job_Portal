@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     fullname:{
-        type : string,
+        type : String,
         required : true
     },
     email:{
-        type : string,
+        type : String,
         required : true,
         unique : true
     },
@@ -14,22 +14,22 @@ const userSchema = new mongoose.Schema({
         required : true
     },
     password:{
-        type : string,
+        type : String,
         required : true
     },
     role:{
-        type : string,
+        type : String,
         required : true,
         enum : ["student","recruiter"]
     },
     profile:{
-        bio:{type:string},
-        skilss:[{type:string}],
-        resume:{type:string},
-        resumeOriginalName:{type:string},
+        bio:{type:String},
+        skills:[{type:String}],
+        resume:{type:String},
+       resumeOriginalName:{type:String},
         company:{type:mongoose.Schema.Types.ObjectId,ref:'company'},
         profilePhoto:{
-            type:string,
+            type:String,
             default:true
         }
     },
