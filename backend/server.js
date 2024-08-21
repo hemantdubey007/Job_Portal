@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import mongoose from "mongoose";
 import companyRoute from "./routes/companyrouter.js"
 import jobRoute from "./routes/jobroute.js"
+import applicationRoute from "./routes/applicationroute.js"
 
 // Setup environment variables
 dotenv.config({});
@@ -36,6 +37,7 @@ app.use(cors(corsOptions));
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/company",companyRoute);
 app.use("/api/v1/job",jobRoute);
+app.use("/api/v1/application",applicationRoute)
 
 
 app.get("/", (req, res) => {
