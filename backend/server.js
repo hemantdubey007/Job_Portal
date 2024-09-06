@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-    origin: 'http://localhost:3000',  // Corrected the URL scheme (added colon)
+    origin: 'http://localhost:5173',  // Corrected the URL scheme (added colon)
     credentials: true                 // Changed 'Credentials' to 'credentials'
 };
 app.use(cors(corsOptions));
