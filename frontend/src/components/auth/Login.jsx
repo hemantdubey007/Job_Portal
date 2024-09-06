@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import Navbar from "../shared/Navbar";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../ui/input";
@@ -10,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "@/redux/authSlice";
 import { Loader, Loader2 } from "lucide-react";
 
+const USER_API_END_POINT = "http://localhost:3000/api/v1"; 
 const Login = () => {
   const [input, setInput] = useState({
     email: "",
@@ -30,24 +32,33 @@ const Login = () => {
 
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+      const res = await axios.post(`${USER_API_END_POINT}/user/login`, input, {
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
       });
+      console.log(res.data)
       if (res.data.success) {
         dispatch(setUser(res.data.user));
         navigate("/");
         toast.success(res.data.message);
+      }else {
+        toast.error(res.data.message || "Login failed.");
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      console.log(error.message);
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.message);
+      } else {
+        // Handle cases where no response is available (e.g., network errors)
+        toast.error("An error occurred. Please try again.");
+      }
     } finally {
       dispatch(setLoading(false));
     }
   };
+
 
   return (
     <div>
@@ -92,7 +103,7 @@ const Login = () => {
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
-                <Label htmlFor="r1">Candidate</Label>
+                <Label htmlFor="r1">student</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Input
