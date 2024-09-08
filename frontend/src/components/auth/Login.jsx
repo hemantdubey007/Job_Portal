@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "@/redux/authSlice";
 import { Loader, Loader2 } from "lucide-react";
 
+
 const USER_API_END_POINT = "http://localhost:3000/api/v1"; 
 const Login = () => {
   const [input, setInput] = useState({
@@ -40,8 +41,11 @@ const Login = () => {
       });
       console.log(res.data)
       if (res.data.success) {
+        console.log("Navigating to home...");
         dispatch(setUser(res.data.user));
-        navigate("/");
+        // console.log("fsdsdfd");
+        // navigate("/");
+        window.location.href = "/";
         toast.success(res.data.message);
       }else {
         toast.error(res.data.message || "Login failed.");
@@ -59,6 +63,9 @@ const Login = () => {
     }
   };
 
+  React.useEffect(() => {
+    navigate("/");
+  }, []);
 
   return (
     <div>
