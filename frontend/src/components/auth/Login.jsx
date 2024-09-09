@@ -6,13 +6,13 @@ import { Input } from "../ui/input";
 import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "@/redux/authSlice";
-import { Loader, Loader2 } from "lucide-react";
-
+import { CloudCog, Loader2 } from "lucide-react";
 
 const USER_API_END_POINT = "http://localhost:3000/api/v1"; 
+
 const Login = () => {
   const [input, setInput] = useState({
     email: "",
@@ -30,7 +30,7 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+     console.log("hi");
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/user/login`, input, {
@@ -39,33 +39,27 @@ const Login = () => {
         },
         withCredentials: true,
       });
-      console.log(res.data)
-      if (res.data.success) {
-        console.log("Navigating to home...");
+
+      console.log(res.data);
+
+      if (res.data) {
         dispatch(setUser(res.data.user));
-        // console.log("fsdsdfd");
-        // navigate("/");
-        window.location.href = "/";
         toast.success(res.data.message);
-      }else {
+        navigate('/', { replace: true });
+        // setRedirect(true); // Set redirect state to true
+      } else {
         toast.error(res.data.message || "Login failed.");
       }
     } catch (error) {
-      console.log(error.message);
       if (error.response && error.response.data) {
         toast.error(error.response.data.message);
       } else {
-        // Handle cases where no response is available (e.g., network errors)
         toast.error("An error occurred. Please try again.");
       }
     } finally {
       dispatch(setLoading(false));
     }
   };
-
-  React.useEffect(() => {
-    navigate("/");
-  }, []);
 
   return (
     <div>
@@ -78,8 +72,9 @@ const Login = () => {
           <h1 className="font-bold text-xl mb-5">Login</h1>
 
           <div className="my-2">
-            <Label>Email</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
+              id="email"
               type="email"
               value={input.email}
               name="email"
@@ -89,8 +84,9 @@ const Login = () => {
           </div>
 
           <div className="my-2">
-            <Label>Password</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
+              id="password"
               type="password"
               value={input.password}
               name="password"
@@ -103,6 +99,7 @@ const Login = () => {
             <RadioGroup className="flex item-center gap-4 my-5">
               <div className="flex items-center space-x-2">
                 <Input
+                  id="student"
                   type="radio"
                   name="role"
                   value="student"
@@ -110,10 +107,11 @@ const Login = () => {
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
-                <Label htmlFor="r1">student</Label>
+                <Label htmlFor="student">Student</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Input
+                  id="recruiter"
                   type="radio"
                   name="role"
                   value="recruiter"
@@ -121,10 +119,11 @@ const Login = () => {
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
-                <Label htmlFor="r2">Recruiter</Label>
+                <Label htmlFor="recruiter">Recruiter</Label>
               </div>
             </RadioGroup>
           </div>
+
           {loading ? (
             <Button className="w-full my-4">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
