@@ -15,7 +15,7 @@ import PostJob from "./components/admin/PostJob";
 import Applicants from "./components/admin/Applicant";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
-const basename = process.env.NODE_ENV === 'production' ? "/Job_Portal" : "";
+const basename = "/Job_Portal";
 
 const appRouter = createBrowserRouter(
   [
